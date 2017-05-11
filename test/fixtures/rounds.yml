@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  result: MyString
+  over_25_degrees: false
+
+two:
+  result: MyString
+  over_25_degrees: false

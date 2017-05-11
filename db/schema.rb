@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170511013857) do
+ActiveRecord::Schema.define(version: 20170511040444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bets", force: :cascade do |t|
+    t.integer  "player_id"
+    t.integer  "round_id"
+    t.integer  "amount"
+    t.string   "option"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id"], name: "index_bets_on_player_id", using: :btree
+    t.index ["round_id"], name: "index_bets_on_round_id", using: :btree
+  end
 
   create_table "players", force: :cascade do |t|
     t.string   "name"
@@ -22,4 +33,13 @@ ActiveRecord::Schema.define(version: 20170511013857) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "rounds", force: :cascade do |t|
+    t.string   "result"
+    t.boolean  "over_25_degrees"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_foreign_key "bets", "players"
+  add_foreign_key "bets", "rounds"
 end
