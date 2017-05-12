@@ -25,7 +25,6 @@ class PlayersController < ApplicationController
   # POST /players.json
   def create
     @player = Player.new(player_params)
-    @player.money = 10000
     respond_to do |format|
       if @player.save
         format.html { redirect_to @player, notice: 'Jugador Creado correctamente!' }

@@ -2,8 +2,24 @@ class Round < ApplicationRecord
   has_many :bets
   has_many :players, through: :bets
 
+  after_initialize :init
+  before_create :add_players_and_bets
 
-  #Antes de comenzar una ronda, comprobar el clima es mayor a 25°C los proximos 7 días
+  def init
+    self.result ||= set_option # opcion ganadora
+    self.over_25_degrees ||= weather_over_25_degrees?
+  end
+
+  #Agregar a los jugadores con sus respectivas apuestas
+  def add_players_and_bets
+    Player.where('money > ?', 0).each do |player|
+      bet = player.make_bet(self.over_25_degrees)
+      self.bets << bet
+    end
+  end
+
+
+  #Comprobar si el clima es mayor a 25°C los proximos 7 días
   def weather_over_25_degrees?
     result = false
     require 'rest-client'
@@ -16,5 +32,17 @@ class Round < ApplicationRecord
       child["day_max_temp"].to_i > 25 ? result = true : nil
     end
     return result
+  end
+
+  
+
+  def set_option
+    options = {
+      "Verde" => 2,
+      "Rojo" => 49,
+      "Negro" => 49
+    }
+
+    Pickup.new(options).pick
   end
 end
