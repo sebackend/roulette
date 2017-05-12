@@ -6,18 +6,24 @@ class Player < ApplicationRecord
   validates :name, presence: true, uniqueness: { case_sensitive:false }
   validates :money, presence: true
 
-  after_initialize :init
+  after_initialize :set_initial_money
 
-  def init
+  def set_initial_money
     self.money ||= 10000
   end
 
-  def make_bet(over_25_degrees)
-    # TODO : fix este hardcoded, cambiar tipo apuesta si está sobre 25°C
-    bet = Bet.new(amount: 10, option: "Verde")
-    self.bets << bet
-    
-    # restar dinero
+  def make_bet(over_25_degrees, choice, round_id)
+    amount = 0
+    if over_25_degrees
+      amount = money * rand(4..10) / 100
+    else
+      amount = money * rand(8..15) / 100
+    end
+
+    bet = Bet.new(amount: amount, option: choice, round_id: round_id)
+    bets << bet
+    self.money = money - amount
+    save
 
     return bet
   end

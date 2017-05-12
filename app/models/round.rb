@@ -3,7 +3,7 @@ class Round < ApplicationRecord
   has_many :players, through: :bets
 
   after_initialize :init
-  before_create :add_players_and_bets
+  after_create :add_players_and_bets
 
   def init
     self.result ||= set_option # opcion ganadora
@@ -13,8 +13,7 @@ class Round < ApplicationRecord
   #Agregar a los jugadores con sus respectivas apuestas
   def add_players_and_bets
     Player.where('money > ?', 0).each do |player|
-      bet = player.make_bet(self.over_25_degrees)
-      self.bets << bet
+      bet = player.make_bet(over_25_degrees, set_option, id)
     end
   end
 
