@@ -3,7 +3,7 @@ class Round < ApplicationRecord
   has_many :players, through: :bets
 
   after_initialize :init
-  after_create :add_players_and_bets
+  after_create :add_players_and_bets, :give_prize
 
   def init
     self.result ||= set_option # opcion ganadora
@@ -17,6 +17,11 @@ class Round < ApplicationRecord
     end
   end
 
+  def give_prize
+    bets.each do |bet|
+      bet.update_player_money
+    end
+  end
 
   #Comprobar si el clima es mayor a 25°C los proximos 7 días
   def weather_over_25_degrees?

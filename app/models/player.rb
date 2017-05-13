@@ -28,4 +28,10 @@ class Player < ApplicationRecord
     return bet
   end
 
+  def get_prize(amount) 
+    self.money = money + amount
+    save
+  end
+
+
 end
