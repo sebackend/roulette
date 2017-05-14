@@ -1,45 +1,52 @@
-<h1 style="margin-bottom:30px;">Todas las rondas</h1>
-<% @rounds.each do |round| %>
-    <article style="margin-top:20px;margin-right: auto; margin-left: auto;max-width: 600px">
-      <table>
-        <tr class="bg-gray">
-          <th>Inicio</th>
-          <td colspan="4" class="text-center" colspan="2"><%= round.created_at.strftime('%d-%m-%Y [%r]') %></td>
-        </tr>
-        <tr class="bg-gray">
-          <th>Sobre 25°C</th>
-          <td colspan="4" class="text-center">
-            <%= 'SI' if round.over_25_degrees %>
-            <%= 'NO' unless round.over_25_degrees %>
-          </td> 
-        </tr>
-        <tr class="bg-gray">
-          <th>Resultado</th>
-          <th class="text-center <%= round.result.downcase %>" colspan="4">
-            <%= round.result %>
-          </th>
-        </tr>
-        <tr class="bg-gray">
-          <th>Jugador</th>
-          <th class="text-center">Apuesta</th>
-          <th class="text-center">Monto</th>
-          <th class="text-center">Ganador</th>
-          <th class="text-center">Premio Final</th>
-        </tr>
-        <% round.bets.order('prize DESC').each do |bet| %>
-          <tr>
-            <td><%= bet.player.name %></td>
-            <td class="<%= bet.option.downcase %> text-center">
-              <%= bet.option %>
-            </td>
-            <td class="text-right">$<%= bet.amount %></td>
-            <td class="text-center <%= bet.option == round.result %>">
-              <%= "&#10003;".html_safe if bet.option == round.result %>
-              <%= "&#10005;".html_safe if bet.option != round.result %>
-            </td>
-            <td class="text-right">$<%= bet.prize %></td>
+
+<div style="margin: 0 20px;padding: 30px 0">
+  <h1 style="margin-top:100px;">Todas las rondas</h1>
+  
+  <%= will_paginate @rounds, class: 'flickr_pagination' %>
+
+  <% @rounds.each do |round| %>
+      <article style="margin:20px auto;max-width: 600px">
+        <table>
+          <tr class="bg-gray">
+            <th>Inicio</th>
+            <td colspan="4" class="text-center" colspan="2"><%= round.created_at.strftime('%d-%m-%Y [%r]') %></td>
           </tr>
-        <% end %>
-      </table>
-    </article>
-<% end %>  
+          <tr class="bg-gray">
+            <th>Sobre 25°C</th>
+            <td colspan="4" class="text-center">
+              <%= 'SI' if round.over_25_degrees %>
+              <%= 'NO' unless round.over_25_degrees %>
+            </td> 
+          </tr>
+          <tr class="bg-gray">
+            <th>Resultado</th>
+            <th class="text-center <%= round.result.downcase %>" colspan="4">
+              <%= round.result %>
+            </th>
+          </tr>
+          <tr class="bg-gray">
+            <th>Jugador</th>
+            <th class="text-center">Apuesta</th>
+            <th class="text-center">Monto</th>
+            <th class="text-center">Ganador</th>
+            <th class="text-center">Premio Final</th>
+          </tr>
+          <% round.bets.order('prize DESC').each do |bet| %>
+            <tr>
+              <td><%= bet.player.name %></td>
+              <td class="<%= bet.option.downcase %> text-center">
+                <%= bet.option %>
+              </td>
+              <td class="text-right">$<%= bet.amount %></td>
+              <td class="text-center <%= bet.option == round.result %>">
+                <%= "&#10003;".html_safe if bet.option == round.result %>
+                <%= "&#10005;".html_safe if bet.option != round.result %>
+              </td>
+              <td class="text-right">$<%= bet.prize %></td>
+            </tr>
+          <% end %>
+        </table>
+      </article>
+  <% end %>  
+  <%= will_paginate @rounds, class: 'flickr_pagination' %>
+</div>
