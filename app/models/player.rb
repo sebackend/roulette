@@ -14,11 +14,17 @@ class Player < ApplicationRecord
 
   def make_bet(over_25_degrees, choice, round_id)
     amount = 0
-    if over_25_degrees
-      amount = money * rand(4..10) / 100
+    #1000 o menos, apuesta todo
+    if money <= 1000
+      amount = money
     else
-      amount = money * rand(8..15) / 100
+      if over_25_degrees
+        amount = money * rand(4..10) / 100
+      else
+        amount = money * rand(8..15) / 100
+      end    
     end
+    
 
     bet = Bet.new(amount: amount, option: choice, round_id: round_id)
     bets << bet
