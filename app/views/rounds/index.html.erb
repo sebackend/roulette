@@ -8,12 +8,14 @@
     border-collapse: collapse;
     width: 100%;
   }
-  th, td {
-    padding: 10px;
+  th {
+    padding: 7px;
   }
-
+  td {
+   padding: 5px; 
+  }
   .bg-gray{
-    background-color: #f2f2f2;
+    background-color: #b1b1b1;
   }
 
   .verde{
@@ -53,26 +55,28 @@
       <table>
         <tr class="bg-gray">
           <th>Inicio</th>
-          <td class="text-center" colspan="3"><%= round.created_at.strftime('%d-%m-%Y [%r]') %></td>
+          <td class="text-center" colspan="4"><%= round.created_at.strftime('%d-%m-%Y [%r]') %></td>
         </tr>
         <tr class="bg-gray">
           <th>Resultado</th>
-          <th class="text-center <%= round.result.downcase %>" colspan="3">
+          <th class="text-center <%= round.result.downcase %>" colspan="4">
             <%= round.result %>
           </th>
         </tr>
         <tr class="bg-gray">
           <th>Jugador</th>
           <th class="text-center">Apuesta</th>
+          <th class="text-center">Monto</th>
           <th class="text-center">Ganador</th>
           <th class="text-center">Premio Final</th>
         </tr>
-        <% round.bets.each do |bet| %>
+        <% round.bets.order('prize DESC').each do |bet| %>
           <tr>
             <td><%= bet.player.name %></td>
             <td class="<%= bet.option.downcase %> text-center">
               <%= bet.option %>
             </td>
+            <td class="text-right">$<%= bet.amount %></td>
             <td class="text-center <%= bet.option == round.result %>">
               <%= "&#10003;".html_safe if bet.option == round.result %>
               <%= "&#10005;".html_safe if bet.option != round.result %>

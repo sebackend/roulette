@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'players#index'
+  root 'rounds#index'
   get 'rounds/index'
   
   resources :players
