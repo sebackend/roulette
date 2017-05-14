@@ -5,6 +5,9 @@ class Round < ApplicationRecord
   after_initialize :init
   after_create :add_players_and_bets, :give_prize
 
+  #traer siempre las últimas rondas creadas
+  default_scope -> { order(created_at: :desc) }
+
   def init
     self.result ||= set_option # opcion ganadora
     self.over_25_degrees ||= weather_over_25_degrees?
@@ -29,16 +32,23 @@ class Round < ApplicationRecord
     require 'rest-client'
     require 'crack'
 
-    response = RestClient.get('http://www.myweather2.com/developer/weather.ashx?uac=WxnCRiKFpK&uref=f37337a2-9fcb-44d8-b0b7-91b226b108e8')
-    data = Crack::XML.parse(response)
+    RestClient.get('http://www.myweather2.com/developer/weather.ashx?uac=WxnCRiKFpK&uref=f37337a2-9fcb-44d8-b0b7-91b226b108e8'){ |response, request, result, &block|
+      case response.code
+      when 200
+        data = Crack::XML.parse(response)
+        if data.key?("weather") && data["weather"].key?("forecast")
+          data["weather"]["forecast"].each do |child|
+            result = child["day_max_temp"].to_i > 25
+            break if result
+          end  
+        end
 
-    data["weather"]["forecast"].each do |child|
-      child["day_max_temp"].to_i > 25 ? result = true : nil
-    end
-    return result
+        return result
+      else
+        return result
+      end
+    }
   end
-
-  
 
   def set_option
     options = {

@@ -1,7 +1,6 @@
 <style>
   table, td, th {    
-    border: 1px solid #ddd;
-    text-align: left;
+    border: 1px solid #686868;
   }
 
   table {
@@ -9,10 +8,10 @@
     width: 100%;
   }
   th {
-    padding: 7px;
+    padding: 4px;
   }
   td {
-   padding: 5px; 
+   padding: 3 px; 
   }
   .bg-gray{
     background-color: #b1b1b1;
@@ -55,7 +54,14 @@
       <table>
         <tr class="bg-gray">
           <th>Inicio</th>
-          <td class="text-center" colspan="4"><%= round.created_at.strftime('%d-%m-%Y [%r]') %></td>
+          <td colspan="4" class="text-center" colspan="2"><%= round.created_at.strftime('%d-%m-%Y [%r]') %></td>
+        </tr>
+        <tr class="bg-gray">
+          <th>Sobre 25°C</th>
+          <td colspan="4" class="text-center">
+            <%= 'SI' if round.over_25_degrees %>
+            <%= 'NO' unless round.over_25_degrees %>
+          </td> 
         </tr>
         <tr class="bg-gray">
           <th>Resultado</th>

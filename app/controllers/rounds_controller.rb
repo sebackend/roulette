@@ -1,5 +1,5 @@
 class RoundsController < ApplicationController
   def index
-    @rounds = Round.all
+    @rounds = Round.includes(:bets)
   end
 end
