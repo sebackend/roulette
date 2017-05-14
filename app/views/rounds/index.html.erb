@@ -1,0 +1,85 @@
+<style>
+  table, td, th {    
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    padding: 10px;
+  }
+
+  .bg-gray{
+    background-color: #f2f2f2;
+  }
+
+  .verde{
+    background-color: #5BA453;
+    color: #fff;
+  }
+
+  .negro{
+    background-color: #000;
+    color: #fff;
+  }
+
+  .rojo{
+    background-color: #EB2522;
+    color: #fff; 
+  }
+
+  .text-center{
+    text-align: center;
+  }
+
+  .text-right{
+    text-align: right; 
+  }
+
+  .true{
+    color: #00720A;
+  }
+
+  .false{
+    color: #FF0000;
+  }
+</style>
+<h1 style="margin-bottom:30px;">Todas las rondas</h1>
+<% @rounds.each do |round| %>
+    <article style="margin-top:20px;margin-right: auto; margin-left: auto;max-width: 600px">
+      <table>
+        <tr class="bg-gray">
+          <th>Inicio</th>
+          <td class="text-center" colspan="3"><%= round.created_at.strftime('%d-%m-%Y [%r]') %></td>
+        </tr>
+        <tr class="bg-gray">
+          <th>Resultado</th>
+          <th class="text-center <%= round.result.downcase %>" colspan="3">
+            <%= round.result %>
+          </th>
+        </tr>
+        <tr class="bg-gray">
+          <th>Jugador</th>
+          <th class="text-center">Apuesta</th>
+          <th class="text-center">Ganador</th>
+          <th class="text-center">Premio Final</th>
+        </tr>
+        <% round.bets.each do |bet| %>
+          <tr>
+            <td><%= bet.player.name %></td>
+            <td class="<%= bet.option.downcase %> text-center">
+              <%= bet.option %>
+            </td>
+            <td class="text-center <%= bet.option == round.result %>">
+              <%= "&#10003;".html_safe if bet.option == round.result %>
+              <%= "&#10005;".html_safe if bet.option != round.result %>
+            </td>
+            <td class="text-right">$<%= bet.prize %></td>
+          </tr>
+        <% end %>
+      </table>
+    </article>
+<% end %>  
