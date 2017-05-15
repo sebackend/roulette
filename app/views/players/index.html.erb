@@ -1,7 +1,10 @@
 <div style="margin-top:90px;padding:0 20px">
   <p id="notice"><%= notice %></p>
 
-  <h1>Players</h1>
+  <h1>
+    Jugadores    
+  </h1>
+  <%= link_to 'Nuevo Jugador', new_player_path, class:'button' %>
 
   <table style="max-width: 500px">
     <thead>
@@ -23,9 +26,4 @@
       <% end %>
     </tbody>
   </table>
-
-  <br>
-
-  <%= link_to 'New Player', new_player_path %>
-
 </div>
