@@ -1,10 +1,6 @@
 # Postulación NNODES - Simulación de ruleta
 
-[![N|Solid](https://scontent.fsst1-1.fna.fbcdn.net/v/t1.0-9/18520009_290517828038103_7385027949880136848_n.jpg?oh=c7447bf7c361d6ded59ae458299aba6b&oe=59AE6423)](#)
-
 Aplicación para simular a un grupo de personas jugando a la ruleta, dependiendo del clima, los jugadores modifican sus apuestas.
-
-Disponible en producción a través Heroku => [DEMO](https://roulette-app-nnodes.herokuapp.com/)
 
  ## Instalación local
 
